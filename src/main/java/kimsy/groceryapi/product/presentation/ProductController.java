@@ -18,7 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public String getFruits(ProductsSearchRequest productsSearchRequest, Model model) {
+    public String getProducts(ProductsSearchRequest productsSearchRequest, Model model) {
         final ProductsResponse products = productService.getProducts(productsSearchRequest);
         model.addAttribute("products", products);
         model.addAttribute("productType", productsSearchRequest.productType());

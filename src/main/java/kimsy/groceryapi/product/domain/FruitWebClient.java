@@ -1,7 +1,6 @@
 package kimsy.groceryapi.product.domain;
 
 import java.util.Arrays;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ public class FruitWebClient {
         fruitWebClient = WebClient.builder().baseUrl(fruitUrl).build();
     }
 
-    public List<String> getProductNames() {
+    public Products getProducts() {
         final AccessToken accessToken = getToken();
         final String[] result = fruitWebClient.get()
                 .uri(ProductType.FRUIT.productUri())
@@ -28,7 +27,7 @@ public class FruitWebClient {
             throw new IllegalStateException("정보를 가져오는 데 실패했습니다.");
         }
 
-        return Arrays.stream(result).toList();
+        return new Products(Arrays.stream(result).toList());
     }
 
     private AccessToken getToken() {

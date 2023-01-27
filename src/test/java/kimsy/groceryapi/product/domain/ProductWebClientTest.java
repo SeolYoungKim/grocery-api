@@ -63,7 +63,7 @@ class ProductWebClientTest {
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
             final List<String> actual = productWebClient.getProducts(
-                    ProductType.FRUIT.productTypeName());
+                    ProductType.FRUIT.productTypeName()).values();
 
 
             assertThat(actual).hasSize(expect.length);
@@ -84,7 +84,7 @@ class ProductWebClientTest {
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
             final List<String> actual = productWebClient.getProducts(
-                    ProductType.VEGETABLE.productTypeName());
+                    ProductType.VEGETABLE.productTypeName()).values();
 
 
             assertThat(actual).hasSize(expect.length);

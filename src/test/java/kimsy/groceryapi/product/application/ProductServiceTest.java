@@ -69,7 +69,7 @@ class ProductServiceTest {
         final ProductsSearchRequest fruitRequest = new ProductsSearchRequest("fruit");
         final ProductsResponse result = productService.getProducts(fruitRequest);
 
-        final List<String> actual = result.products();
+        final List<String> actual = result.values();
         assertThat(actual).hasSize(EXPECT.length);
         assertThat(actual).contains(EXPECT);
     }
