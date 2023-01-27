@@ -1,0 +1,4 @@
+api:
+  url:
+    fruit: "과일 가게 URI"
+    vegetable: "채소 가게 URI"
