@@ -48,13 +48,13 @@ class ProductWebClientTest {
     @DisplayName("품목이 전달되었을 때")
     @Nested
     class GetProducts {
-        private static final String ACCESS_TOKEN = "{ \"accessToken\" : \"token\" }";
 
         @DisplayName("품목으로 fruit이 전달된 경우 과일 목록을 반환한다.")
         @Test
         void fruitToProductNames() throws JsonProcessingException {
+            final String token = "{ \"accessToken\" : \"token\" }";
             mockWebServer.enqueue(new MockResponse()
-                    .setBody(objectMapper.writeValueAsString(ACCESS_TOKEN))
+                    .setBody(objectMapper.writeValueAsString(token))
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
             final String[] expect = {"배", "토마토", "사과", "바나나"};
@@ -66,16 +66,17 @@ class ProductWebClientTest {
                     ProductType.FRUIT.productTypeName());
 
 
-            assertThat(actual).hasSize(4);
+            assertThat(actual).hasSize(expect.length);
             assertThat(actual).contains(expect);
         }
 
         @DisplayName("품목으로 vegetable이 전달된 경우 채소 목록을 반환한다.")
         @Test
         void vegetableToProductNames() throws JsonProcessingException {
+            final String token = "Authorization=token";
             mockWebServer.enqueue(new MockResponse()
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                    .addHeader(HttpHeaders.SET_COOKIE, "Authorization=token"));
+                    .addHeader(HttpHeaders.SET_COOKIE, token));
 
             final String[] expect = {"치커리", "토마토", "깻잎", "상추"};
             mockWebServer.enqueue(new MockResponse()
@@ -86,7 +87,7 @@ class ProductWebClientTest {
                     ProductType.VEGETABLE.productTypeName());
 
 
-            assertThat(actual).hasSize(4);
+            assertThat(actual).hasSize(expect.length);
             assertThat(actual).contains(expect);
         }
 
