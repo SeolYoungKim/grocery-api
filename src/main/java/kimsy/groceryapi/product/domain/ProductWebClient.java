@@ -24,6 +24,4 @@ public class ProductWebClient {
 
         throw new IllegalArgumentException("서비스를 지원하지 않는 품목입니다.");
     }
-
-
 }

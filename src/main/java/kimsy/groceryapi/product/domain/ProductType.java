@@ -22,6 +22,10 @@ public enum ProductType {
         this.productUri = productUri;
     }
 
+    public String productTypeName() {
+        return productTypeName;
+    }
+
     public String tokenUri() {
         return tokenUri;
     }

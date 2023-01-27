@@ -21,6 +21,7 @@ public class ProductController {
     public String getFruits(ProductsSearchRequest productsSearchRequest, Model model) {
         final ProductsResponse products = productService.getProducts(productsSearchRequest);
         model.addAttribute("products", products);
+        model.addAttribute("productType", productsSearchRequest.productType());
         return "products";
     }
 }
