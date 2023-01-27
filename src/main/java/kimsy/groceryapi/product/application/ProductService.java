@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 public class ProductService {
     private final ProductWebClient productWebClient;
 
-    public ProductsResponse getProducts(final ProductsSearchRequest productPriceRequest) {
-        final List<String> product = productWebClient.getProducts(productPriceRequest.productType());
+    public ProductsResponse getProducts(final ProductsSearchRequest productsSearchRequest) {
+        final List<String> product = productWebClient.getProducts(productsSearchRequest.productType());
         return new ProductsResponse(product);
     }
 }
