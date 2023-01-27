@@ -1,6 +1,7 @@
 package kimsy.groceryapi.product.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,12 +45,12 @@ class ProductWebClientTest {
         productWebClient = new ProductWebClient(fruitWebClient, vegetableWebClient);
     }
 
-    @DisplayName("품목(fruit/vegetable)이 전달되었을 때")
+    @DisplayName("품목이 전달되었을 때")
     @Nested
     class GetProducts {
         private static final String ACCESS_TOKEN = "{ \"accessToken\" : \"token\" }";
 
-        @DisplayName("fruit이 전달된 경우 과일 목록을 반환한다.")
+        @DisplayName("품목으로 fruit이 전달된 경우 과일 목록을 반환한다.")
         @Test
         void fruitToProductNames() throws JsonProcessingException {
             mockWebServer.enqueue(new MockResponse()
@@ -69,7 +70,7 @@ class ProductWebClientTest {
             assertThat(actual).contains(expect);
         }
 
-        @DisplayName("vegetable이 전달된 경우 채소 목록을 반환한다.")
+        @DisplayName("품목으로 vegetable이 전달된 경우 채소 목록을 반환한다.")
         @Test
         void vegetableToProductNames() throws JsonProcessingException {
             mockWebServer.enqueue(new MockResponse()
@@ -87,6 +88,15 @@ class ProductWebClientTest {
 
             assertThat(actual).hasSize(4);
             assertThat(actual).contains(expect);
+        }
+
+        @DisplayName("지원되지 않는 품목이 전달된 경우 예외를 발생시킨다.")
+        @Test
+        void failCase() {
+            final String notSupportedProductType = "고기";
+            assertThatThrownBy(() -> productWebClient.getProducts(notSupportedProductType))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("서비스를 지원하지 않는 품목입니다.");
         }
     }
 }
