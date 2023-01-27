@@ -1,10 +1,10 @@
-package kimsy.fruitapi;
+package kimsy.groceryapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FruitapiApplicationTests {
+class GroceryapiApplicationTests {
 
 	@Test
 	void contextLoads() {

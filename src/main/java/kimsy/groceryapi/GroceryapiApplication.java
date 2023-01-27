@@ -1,13 +1,13 @@
-package kimsy.fruitapi;
+package kimsy.groceryapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FruitapiApplication {
+public class GroceryapiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FruitapiApplication.class, args);
+		SpringApplication.run(GroceryapiApplication.class, args);
 	}
 
 }

@@ -38,3 +38,7 @@ out/
 
 ### etc ###
 .DS_Store
+
+### only for develop ###
+learning_test
+application-dev.yml
