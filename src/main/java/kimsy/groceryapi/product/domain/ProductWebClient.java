@@ -23,4 +23,15 @@ public class ProductWebClient {
 
         throw new IllegalArgumentException("서비스를 지원하지 않는 품목입니다.");
     }
+
+    public Product getProduct(final String productType, final String productName) {
+        if (ProductType.isFruit(productType)) {
+            return fruitClient.getPrice(productName);
+
+        } else if (ProductType.isVegetable(productType)) {
+            return vegetableWebClient.getPrice(productName);
+        }
+
+        throw new IllegalArgumentException("서비스를 지원하지 않는 품목입니다.");
+    }
 }

@@ -37,4 +37,17 @@ public class FruitWebClient {
                 .bodyToMono(AccessToken.class)
                 .block();
     }
+
+    public Product getPrice(final String productName) {
+        final AccessToken accessToken = getToken();
+        return fruitWebClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(ProductType.FRUIT.productUri())
+                        .queryParam("name", productName)
+                        .build())
+                .header(HttpHeaders.AUTHORIZATION, accessToken.accessToken())
+                .retrieve()
+                .bodyToMono(Product.class)
+                .block();
+    }
 }

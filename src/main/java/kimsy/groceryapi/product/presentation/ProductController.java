@@ -1,7 +1,9 @@
 package kimsy.groceryapi.product.presentation;
 
 import kimsy.groceryapi.product.application.ProductService;
+import kimsy.groceryapi.product.application.dto.ProductPriceResponse;
 import kimsy.groceryapi.product.application.dto.ProductsResponse;
+import kimsy.groceryapi.product.presentation.dto.ProductPriceRequest;
 import kimsy.groceryapi.product.presentation.dto.ProductsSearchRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,5 +25,12 @@ public class ProductController {
         model.addAttribute("products", products);
         model.addAttribute("productType", productsSearchRequest.productType());
         return "products";
+    }
+
+    @GetMapping("/price")
+    public String getProduct(ProductPriceRequest productPriceRequest, Model model) {
+        final ProductPriceResponse priceResponse = productService.getProduct(productPriceRequest);
+        model.addAttribute("priceResponse", priceResponse);
+        return "price";
     }
 }

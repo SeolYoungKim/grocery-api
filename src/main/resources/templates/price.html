@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>과일&채소 가격 조회 서비스</title>
+</head>
+<body>
+<div th:object="${priceResponse}">
+  <div>
+    <label for="productName">품목명</label>
+    <input id="productName" th:value="*{productName}" disabled/>
+
+    <label for="productPrice">가격</label>
+    <input id="productPrice" th:value="|*{price} 원|" disabled/>
+  </div>
+</div>
+</body>
+</html>

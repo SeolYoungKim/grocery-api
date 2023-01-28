@@ -46,4 +46,17 @@ public class VegetableWebClient {
                     return Mono.fromSupplier(() -> new AccessToken(responseCookie.getValue()));
                 }).block();
     }
+
+    public Product getPrice(final String productName) {
+        final AccessToken accessToken = getToken();
+        return vegetableWebClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(ProductType.VEGETABLE.productUri())
+                        .queryParam("name", productName)
+                        .build())
+                .header(HttpHeaders.AUTHORIZATION, accessToken.accessToken())
+                .retrieve()
+                .bodyToMono(Product.class)
+                .block();
+    }
 }
