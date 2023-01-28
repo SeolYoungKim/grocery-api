@@ -10,7 +10,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 @ControllerAdvice
 public class WebClientExceptionController {
-
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(WebClientResponseException.NotFound.class)
     public String notFountHandler(Model model) {

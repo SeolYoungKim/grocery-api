@@ -1,18 +1,14 @@
 package kimsy.groceryapi.product.domain;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+@RequiredArgsConstructor
 @Component
 public class ProductWebClient {
     private final FruitWebClient fruitClient;
     private final VegetableWebClient vegetableWebClient;
-
-    public ProductWebClient(final FruitWebClient fruitClient,
-            final VegetableWebClient vegetableWebClient) {
-        this.fruitClient = fruitClient;
-        this.vegetableWebClient = vegetableWebClient;
-    }
 
     public Products getProducts(final String productType) {
         if (ProductType.isFruit(productType)) {

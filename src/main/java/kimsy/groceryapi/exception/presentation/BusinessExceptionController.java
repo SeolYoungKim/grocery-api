@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class BusinessExceptionController {
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
     public String illegalArgsHandler(RuntimeException e, Model model) {
