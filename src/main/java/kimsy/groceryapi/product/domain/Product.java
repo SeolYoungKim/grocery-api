@@ -8,7 +8,7 @@ public class Product {
         return name;
     }
 
-    public void setName(final String name) {
+    void setName(final String name) {
         this.name = name;
     }
 
@@ -16,7 +16,7 @@ public class Product {
         return price;
     }
 
-    public void setPrice(final Integer price) {
+    void setPrice(final Integer price) {
         this.price = price;
     }
 }
