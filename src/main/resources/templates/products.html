@@ -8,11 +8,27 @@
 <h3 th:if="${productType} == 'fruit'">과일 상품 목록입니다.</h3>
 <h3 th:if="${productType} == 'vegetable'">채소 상품 목록입니다.</h3>
 <body>
-<div th:each="productName : ${products.products()}">
+<div th:each="productName : ${products.values()}">
   <div>
-    <label for="productName">품목명</label>
-    <input id="productName" th:value="*{productName}" disabled/>
+    <label for="productNames"></label>
+    <input id="productNames" th:value="*{productName}" disabled/>
   </div>
 </div>
+
+<div>
+  <h4>개별 가격 조회 서비스</h4>
+  <form action="/product/price" method="get" id="productForm">
+    <label for="productType">분류</label>
+    <select name="productType" id="productType">
+      <option th:if="${productType} == 'fruit'" value="fruit">과일</option>
+      <option th:if="${productType} == 'vegetable'" value="vegetable">채소</option>
+    </select>
+
+    <label for="productName">품목명</label>
+    <input type="text" id="productName" name="productName" placeholder="품목명을 입력해 주세요.">
+  </form>
+  <button type="submit" form="productForm">검색</button>
+</div>
+
 </body>
 </html>

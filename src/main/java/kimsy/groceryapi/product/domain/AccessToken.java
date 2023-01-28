@@ -1,20 +1,20 @@
 package kimsy.groceryapi.product.domain;
 
-public class AccessToken {
+class AccessToken {
     private String accessToken;
 
-    public AccessToken() {
+    AccessToken() {
     }
 
-    public AccessToken(final String accessToken) {
+    AccessToken(final String accessToken) {
         this.accessToken = accessToken;
     }
 
-    public String accessToken() {
+    String accessToken() {
         return accessToken;
     }
 
-    public void setAccessToken(final String accessToken) {
+    void setAccessToken(final String accessToken) {
         this.accessToken = accessToken;
     }
 }
