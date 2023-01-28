@@ -11,7 +11,7 @@ import kimsy.groceryapi.product.application.dto.ProductPriceResponse;
 import kimsy.groceryapi.product.application.dto.ProductsResponse;
 import kimsy.groceryapi.product.domain.AccessToken;
 import kimsy.groceryapi.product.domain.FruitWebClient;
-import kimsy.groceryapi.product.domain.ProductWebClient;
+import kimsy.groceryapi.product.domain.ProductWebClientAdapter;
 import kimsy.groceryapi.product.domain.VegetableWebClient;
 import kimsy.groceryapi.product.presentation.dto.ProductPriceRequest;
 import kimsy.groceryapi.product.presentation.dto.ProductsSearchRequest;
@@ -51,11 +51,11 @@ class ProductServiceTest {
     void setUp() {
         final String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
 
-        ProductWebClient productWebClient = new ProductWebClient(
+        ProductWebClientAdapter productWebClientAdapter = new ProductWebClientAdapter(
                 new FruitWebClient(baseUrl, new AccessToken("token")),
                 new VegetableWebClient(baseUrl, new AccessToken("token")));
 
-        productService = new ProductService(productWebClient);
+        productService = new ProductService(productWebClientAdapter);
     }
 
     @DisplayName("품목에 대한 전체 상품 목록이 들어있는 ProductsResponse를 반환한다.")

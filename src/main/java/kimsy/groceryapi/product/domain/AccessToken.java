@@ -11,7 +11,7 @@ public class AccessToken {
         this.accessToken = accessToken;
     }
 
-    String accessToken() {
+    public String accessToken() {
         return accessToken;
     }
 

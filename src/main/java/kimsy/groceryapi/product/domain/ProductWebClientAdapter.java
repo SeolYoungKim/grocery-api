@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
 @Component
-public class ProductWebClient {
+public class ProductWebClientAdapter {
     private final FruitWebClient fruitClient;
     private final VegetableWebClient vegetableWebClient;
 
