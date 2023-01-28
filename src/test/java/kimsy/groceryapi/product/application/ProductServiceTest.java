@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import kimsy.groceryapi.product.application.dto.ProductPriceResponse;
 import kimsy.groceryapi.product.application.dto.ProductsResponse;
+import kimsy.groceryapi.product.domain.AccessToken;
 import kimsy.groceryapi.product.domain.FruitWebClient;
 import kimsy.groceryapi.product.domain.ProductWebClient;
 import kimsy.groceryapi.product.domain.VegetableWebClient;
@@ -47,17 +48,14 @@ class ProductServiceTest {
     private ProductService productService;
 
     @BeforeEach
-    void setUp() throws JsonProcessingException {
+    void setUp() {
         final String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
 
-        ProductWebClient productWebClient = new ProductWebClient(new FruitWebClient(baseUrl),
-                new VegetableWebClient(baseUrl));
+        ProductWebClient productWebClient = new ProductWebClient(
+                new FruitWebClient(baseUrl, new AccessToken("token")),
+                new VegetableWebClient(baseUrl, new AccessToken("token")));
 
         productService = new ProductService(productWebClient);
-
-        mockWebServer.enqueue(new MockResponse()
-                .setBody(objectMapper.writeValueAsString(TOKEN))
-                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
     }
 
     @DisplayName("품목에 대한 전체 상품 목록이 들어있는 ProductsResponse를 반환한다.")

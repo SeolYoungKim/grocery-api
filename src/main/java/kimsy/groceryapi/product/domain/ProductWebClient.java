@@ -1,18 +1,14 @@
 package kimsy.groceryapi.product.domain;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+@RequiredArgsConstructor
 @Component
 public class ProductWebClient {
     private final FruitWebClient fruitClient;
     private final VegetableWebClient vegetableWebClient;
-
-    public ProductWebClient(final FruitWebClient fruitClient,
-            final VegetableWebClient vegetableWebClient) {
-        this.fruitClient = fruitClient;
-        this.vegetableWebClient = vegetableWebClient;
-    }
 
     public Products getProducts(final String productType) {
         if (ProductType.isFruit(productType)) {
@@ -38,7 +34,7 @@ public class ProductWebClient {
         throw new IllegalArgumentException("서비스를 지원하지 않는 품목입니다.");
     }
 
-    private static void validate(final String productName) {
+    private void validate(final String productName) {
         if (!StringUtils.hasText(productName)) {
             throw new IllegalArgumentException("품목명을 입력해 주세요.");
         }

@@ -1,12 +1,13 @@
 package kimsy.groceryapi.product.domain;
 
-class AccessToken {
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class AccessToken {
     private String accessToken;
 
-    AccessToken() {
-    }
-
-    AccessToken(final String accessToken) {
+    public AccessToken(final String accessToken) {
         this.accessToken = accessToken;
     }
 
