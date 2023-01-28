@@ -21,8 +21,6 @@ import org.springframework.http.MediaType;
 
 class ProductWebClientTest {
     private static MockWebServer mockWebServer;
-    private static final String TOKEN_FOR_FRUIT = "{ \"accessToken\" : \"token\" }";
-    private static final String TOKEN_FOR_VEGETABLE = "Authorization=token";
 
     @BeforeAll
     static void beforeAll() throws IOException {
@@ -42,10 +40,9 @@ class ProductWebClientTest {
     void setUp() {
         final String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
 
-        FruitWebClient fruitWebClient = new FruitWebClient(baseUrl);
-        VegetableWebClient vegetableWebClient = new VegetableWebClient(baseUrl);
-
-        productWebClient = new ProductWebClient(fruitWebClient, vegetableWebClient);
+        productWebClient = new ProductWebClient(
+                new FruitWebClient(baseUrl, new AccessToken("token")),
+                new VegetableWebClient(baseUrl, new AccessToken("token")));
     }
 
 
@@ -56,10 +53,6 @@ class ProductWebClientTest {
         @DisplayName("ProductType으로 fruit이 전달된 경우 과일 목록을 반환한다.")
         @Test
         void fruitToProductNames() throws JsonProcessingException {
-            mockWebServer.enqueue(new MockResponse()
-                    .setBody(objectMapper.writeValueAsString(TOKEN_FOR_FRUIT))
-                    .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
-
             final String[] expect = {"배", "토마토", "사과", "바나나"};
             mockWebServer.enqueue(new MockResponse()
                     .setBody(objectMapper.writeValueAsString(expect))
@@ -76,10 +69,6 @@ class ProductWebClientTest {
         @DisplayName("ProductType으로 vegetable이 전달된 경우 채소 목록을 반환한다.")
         @Test
         void vegetableToProductNames() throws JsonProcessingException {
-            mockWebServer.enqueue(new MockResponse()
-                    .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                    .addHeader(HttpHeaders.SET_COOKIE, TOKEN_FOR_VEGETABLE));
-
             final String[] expect = {"치커리", "토마토", "깻잎", "상추"};
             mockWebServer.enqueue(new MockResponse()
                     .setBody(objectMapper.writeValueAsString(expect))
@@ -109,10 +98,6 @@ class ProductWebClientTest {
         @DisplayName("productType=fruit, productName=배 가 전달된 경우 배의 가격을 반환한다.")
         @Test
         void searchFruitPair() throws JsonProcessingException {
-            mockWebServer.enqueue(new MockResponse()
-                    .setBody(objectMapper.writeValueAsString(TOKEN_FOR_FRUIT))
-                    .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
-
             final String productName = "배";
             final int productPrice = 3000;
             mockWebServer.enqueue(new MockResponse()
@@ -130,10 +115,6 @@ class ProductWebClientTest {
         @DisplayName("productType=vegetable, productName=깻잎 이 전달된 경우 깻잎의 가격을 반환한다.")
         @Test
         void searchVegetableSesame() throws JsonProcessingException {
-            mockWebServer.enqueue(new MockResponse()
-                    .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                    .addHeader(HttpHeaders.SET_COOKIE, TOKEN_FOR_VEGETABLE));
-
             final String productName = "깻잎";
             final int productPrice = 1500;
             mockWebServer.enqueue(new MockResponse()

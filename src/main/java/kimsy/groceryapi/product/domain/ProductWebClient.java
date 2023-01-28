@@ -34,7 +34,7 @@ public class ProductWebClient {
         throw new IllegalArgumentException("서비스를 지원하지 않는 품목입니다.");
     }
 
-    private static void validate(final String productName) {
+    private void validate(final String productName) {
         if (!StringUtils.hasText(productName)) {
             throw new IllegalArgumentException("품목명을 입력해 주세요.");
         }

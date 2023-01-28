@@ -4,10 +4,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-class AccessToken {
+public class AccessToken {
     private String accessToken;
 
-    AccessToken(final String accessToken) {
+    public AccessToken(final String accessToken) {
         this.accessToken = accessToken;
     }
 
