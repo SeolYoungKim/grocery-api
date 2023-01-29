@@ -52,7 +52,7 @@ public class VegetableWebClient extends GroceryWebClient {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path(ProductType.VEGETABLE.productUri())
-                        .queryParam("name", productName)
+                        .queryParam(ProductType.VEGETABLE.priceParamKey(), productName)
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, accessToken.accessToken())
                 .retrieve()
