@@ -48,7 +48,7 @@ public abstract class GroceryWebClient {
         }
     }
 
-    public Product getPrice(final String productName) {
+    public Product getProduct(final String productName) {
         Product result;
         try {
             result = requestForProduct(productName);
