@@ -1,6 +1,9 @@
-package kimsy.groceryapi.product.domain;
+package kimsy.groceryapi.product.domain.web_client;
 
 import java.util.Arrays;
+import kimsy.groceryapi.product.domain.AccessToken;
+import kimsy.groceryapi.product.domain.Product;
+import kimsy.groceryapi.product.domain.Products;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -26,7 +29,7 @@ public abstract class GroceryWebClient {
         String[] result;
         try {
             result = requestForProducts();
-        } catch (WebClientResponseException e) {
+        } catch (WebClientResponseException.BadRequest e) {
             log.info("토큰이 만료되어 재발급 요청합니다. {}", e.getMessage());
 
             accessToken = getToken();
@@ -49,7 +52,7 @@ public abstract class GroceryWebClient {
         Product result;
         try {
             result = requestForProduct(productName);
-        } catch (WebClientResponseException e) {
+        } catch (WebClientResponseException.BadRequest e) {
             log.info("토큰이 만료되어 재발급 요청합니다. {}", e.getMessage());
 
             accessToken = getToken();
