@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
 @Configuration
-public class ProductWebClientConfig {
+public class GroceryWebClientConfig {
     private final FruitWebClient fruitWebClient;
     private final VegetableWebClient vegetableWebClient;
 
