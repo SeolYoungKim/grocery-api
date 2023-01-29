@@ -1,5 +1,8 @@
-package kimsy.groceryapi.product.domain;
+package kimsy.groceryapi.product.domain.web_client;
 
+import kimsy.groceryapi.product.domain.AccessToken;
+import kimsy.groceryapi.product.domain.Product;
+import kimsy.groceryapi.product.domain.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;

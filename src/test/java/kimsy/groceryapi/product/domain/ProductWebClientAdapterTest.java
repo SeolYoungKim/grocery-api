@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import kimsy.groceryapi.product.domain.web_client.FruitWebClient;
+import kimsy.groceryapi.product.domain.web_client.VegetableWebClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
