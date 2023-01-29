@@ -43,7 +43,7 @@ public class VegetableWebClient extends GroceryWebClient {
                         throw new IllegalStateException("정보를 가져오는 데 실패했습니다.");
                     }
 
-                    return Mono.fromSupplier(() -> new AccessToken(responseCookie.getValue()));
+                    return Mono.just(new AccessToken(responseCookie.getValue()));
                 }).block();
     }
 

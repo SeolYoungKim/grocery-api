@@ -10,8 +10,9 @@ import kimsy.groceryapi.product.MockWebServerTest;
 import kimsy.groceryapi.product.application.dto.ProductPriceResponse;
 import kimsy.groceryapi.product.application.dto.ProductsResponse;
 import kimsy.groceryapi.product.domain.AccessToken;
-import kimsy.groceryapi.product.domain.ProductWebClientAdapter;
+import kimsy.groceryapi.product.domain.ProductType;
 import kimsy.groceryapi.product.domain.web_client.FruitWebClient;
+import kimsy.groceryapi.product.domain.GroceryWebClientMapper;
 import kimsy.groceryapi.product.domain.web_client.VegetableWebClient;
 import kimsy.groceryapi.product.presentation.dto.ProductPriceRequest;
 import kimsy.groceryapi.product.presentation.dto.ProductsSearchRequest;
@@ -32,11 +33,15 @@ class ProductServiceTest extends MockWebServerTest {
     void setUp() {
         final String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
 
-        ProductWebClientAdapter productWebClientAdapter = new ProductWebClientAdapter(
-                new FruitWebClient(baseUrl, new AccessToken("token")),
-                new VegetableWebClient(baseUrl, new AccessToken("token")));
+        final AccessToken token = new AccessToken("token");
+        final FruitWebClient fruitWebClient = new FruitWebClient(baseUrl, token);
+        final VegetableWebClient vegetableWebClient = new VegetableWebClient(baseUrl, token);
 
-        productService = new ProductService(productWebClientAdapter);
+        GroceryWebClientMapper groceryWebClientMapper = new GroceryWebClientMapper(Map.of(
+                        ProductType.FRUIT.productTypeName(), fruitWebClient,
+                        ProductType.VEGETABLE.productTypeName(), vegetableWebClient));
+
+        productService = new ProductService(groceryWebClientMapper);
     }
 
     @DisplayName("품목에 대한 전체 상품 목록이 들어있는 ProductsResponse를 반환한다.")

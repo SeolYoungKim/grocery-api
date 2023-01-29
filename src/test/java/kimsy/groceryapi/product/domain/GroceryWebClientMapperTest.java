@@ -18,17 +18,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-class ProductWebClientAdapterTest extends MockWebServerTest {
+class GroceryWebClientMapperTest extends MockWebServerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private ProductWebClientAdapter productWebClientAdapter;
+    private GroceryWebClientMapper groceryWebClientMapper;
 
     @BeforeEach
     void setUp() {
         final String baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
+        final AccessToken token = new AccessToken("token");
+        final FruitWebClient fruitWebClient = new FruitWebClient(baseUrl, token);
+        final VegetableWebClient vegetableWebClient = new VegetableWebClient(baseUrl, token);
 
-        productWebClientAdapter = new ProductWebClientAdapter(
-                new FruitWebClient(baseUrl, new AccessToken("token")),
-                new VegetableWebClient(baseUrl, new AccessToken("token")));
+        groceryWebClientMapper = new GroceryWebClientMapper(Map.of(
+                ProductType.FRUIT.productTypeName(), fruitWebClient,
+                ProductType.VEGETABLE.productTypeName(), vegetableWebClient));
     }
 
 
@@ -44,9 +47,8 @@ class ProductWebClientAdapterTest extends MockWebServerTest {
                     .setBody(objectMapper.writeValueAsString(expect))
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
-            final List<String> actual = productWebClientAdapter.getProducts(
+            final List<String> actual = groceryWebClientMapper.getProducts(
                     ProductType.FRUIT.productTypeName()).values();
-
 
             assertThat(actual).hasSize(expect.length);
             assertThat(actual).contains(expect);
@@ -60,7 +62,7 @@ class ProductWebClientAdapterTest extends MockWebServerTest {
                     .setBody(objectMapper.writeValueAsString(expect))
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
-            final List<String> actual = productWebClientAdapter.getProducts(
+            final List<String> actual = groceryWebClientMapper.getProducts(
                     ProductType.VEGETABLE.productTypeName()).values();
 
 
@@ -72,7 +74,7 @@ class ProductWebClientAdapterTest extends MockWebServerTest {
         @Test
         void failCase() {
             final String notSupportedProductType = "고기";
-            assertThatThrownBy(() -> productWebClientAdapter.getProducts(notSupportedProductType))
+            assertThatThrownBy(() -> groceryWebClientMapper.getProducts(notSupportedProductType))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("서비스를 지원하지 않는 품목입니다.");
         }
@@ -92,7 +94,7 @@ class ProductWebClientAdapterTest extends MockWebServerTest {
                             "price", productPrice)))
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
-            final Product product = productWebClientAdapter.getProduct(
+            final Product product = groceryWebClientMapper.getProduct(
                     ProductType.FRUIT.productTypeName(), productName);
 
             assertThat(product.name()).isEqualTo(productName);
@@ -110,7 +112,7 @@ class ProductWebClientAdapterTest extends MockWebServerTest {
                             "price", productPrice)))
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
-            final Product product = productWebClientAdapter.getProduct(
+            final Product product = groceryWebClientMapper.getProduct(
                     ProductType.VEGETABLE.productTypeName(), productName);
 
             assertThat(product.name()).isEqualTo(productName);
@@ -122,7 +124,7 @@ class ProductWebClientAdapterTest extends MockWebServerTest {
         void failCase() {
             final String notSupportedType = "고기";
             final String notSupportedName = "한우";
-            assertThatThrownBy(() -> productWebClientAdapter.getProduct(notSupportedType, notSupportedName))
+            assertThatThrownBy(() -> groceryWebClientMapper.getProduct(notSupportedType, notSupportedName))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("서비스를 지원하지 않는 품목입니다.");
         }
