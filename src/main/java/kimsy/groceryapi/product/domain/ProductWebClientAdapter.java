@@ -1,5 +1,7 @@
 package kimsy.groceryapi.product.domain;
 
+import kimsy.groceryapi.product.domain.web_client.FruitWebClient;
+import kimsy.groceryapi.product.domain.web_client.VegetableWebClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

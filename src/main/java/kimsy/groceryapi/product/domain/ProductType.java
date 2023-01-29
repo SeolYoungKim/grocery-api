@@ -1,8 +1,8 @@
 package kimsy.groceryapi.product.domain;
 
 public enum ProductType {
-    FRUIT("fruit", "/token", "/product"),
-    VEGETABLE("vegetable", "/token", "/item");
+    FRUIT("fruit", "/token", "/product", "name"),
+    VEGETABLE("vegetable", "/token", "/item", "name");
 
     public static boolean isFruit(final String productType) {
         return FRUIT.productTypeName.equals(productType);
@@ -15,11 +15,14 @@ public enum ProductType {
     private final String productTypeName;
     private final String tokenUri;
     private final String productUri;
+    private final String priceParamKey;
 
-    ProductType(final String productTypeName, final String tokenUri, final String productUri) {
+    ProductType(final String productTypeName, final String tokenUri, final String productUri,
+            final String priceParamKey) {
         this.productTypeName = productTypeName;
         this.tokenUri = tokenUri;
         this.productUri = productUri;
+        this.priceParamKey = priceParamKey;
     }
 
     public String productTypeName() {
@@ -32,5 +35,9 @@ public enum ProductType {
 
     public String productUri() {
         return productUri;
+    }
+
+    public String priceParamKey() {
+        return priceParamKey;
     }
 }
