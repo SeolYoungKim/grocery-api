@@ -5,15 +5,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import kimsy.groceryapi.product.MockWebServerTest;
 import kimsy.groceryapi.product.domain.web_client.FruitWebClient;
 import kimsy.groceryapi.product.domain.web_client.VegetableWebClient;
 import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,20 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-class ProductWebClientAdapterTest {
-    private static MockWebServer mockWebServer;
-
-    @BeforeAll
-    static void beforeAll() throws IOException {
-        mockWebServer = new MockWebServer();
-        mockWebServer.start();
-    }
-
-    @AfterAll
-    static void afterAll() throws IOException {
-        mockWebServer.shutdown();
-    }
-
+class ProductWebClientAdapterTest extends MockWebServerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private ProductWebClientAdapter productWebClientAdapter;
 
@@ -108,8 +92,9 @@ class ProductWebClientAdapterTest {
                             "price", productPrice)))
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
-            final String productType = "fruit";
-            final Product product = productWebClientAdapter.getProduct(productType, productName);
+            final Product product = productWebClientAdapter.getProduct(
+                    ProductType.FRUIT.productTypeName(), productName);
+
             assertThat(product.name()).isEqualTo(productName);
             assertThat(product.price()).isEqualTo(productPrice);
         }
@@ -125,8 +110,9 @@ class ProductWebClientAdapterTest {
                             "price", productPrice)))
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
-            final String productType = "vegetable";
-            final Product product = productWebClientAdapter.getProduct(productType, productName);
+            final Product product = productWebClientAdapter.getProduct(
+                    ProductType.VEGETABLE.productTypeName(), productName);
+
             assertThat(product.name()).isEqualTo(productName);
             assertThat(product.price()).isEqualTo(productPrice);
         }

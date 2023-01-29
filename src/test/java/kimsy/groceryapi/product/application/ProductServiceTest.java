@@ -4,45 +4,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import kimsy.groceryapi.product.MockWebServerTest;
 import kimsy.groceryapi.product.application.dto.ProductPriceResponse;
 import kimsy.groceryapi.product.application.dto.ProductsResponse;
 import kimsy.groceryapi.product.domain.AccessToken;
-import kimsy.groceryapi.product.domain.web_client.FruitWebClient;
 import kimsy.groceryapi.product.domain.ProductWebClientAdapter;
+import kimsy.groceryapi.product.domain.web_client.FruitWebClient;
 import kimsy.groceryapi.product.domain.web_client.VegetableWebClient;
 import kimsy.groceryapi.product.presentation.dto.ProductPriceRequest;
 import kimsy.groceryapi.product.presentation.dto.ProductsSearchRequest;
 import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-@ExtendWith(MockitoExtension.class)
-class ProductServiceTest {
+class ProductServiceTest extends MockWebServerTest {
     public static final String PRODUCT_TYPE = "fruit";
-    private static MockWebServer mockWebServer;
-    private static final String TOKEN = "{ \"accessToken\" : \"token\" }";
-
-    @BeforeAll
-    static void beforeAll() throws IOException {
-        mockWebServer = new MockWebServer();
-        mockWebServer.start();
-    }
-
-    @AfterAll
-    static void afterAll() throws IOException {
-        mockWebServer.shutdown();
-    }
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private ProductService productService;
