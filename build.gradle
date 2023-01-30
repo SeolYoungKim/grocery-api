@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.2'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'com.google.osdetector' version '1.7.0'
 }
 
 group = 'kimsy'
@@ -23,13 +24,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.87.Final:osx-aarch_64'  // macos 전용 의존성
+	if (osdetector.arch == "aarch_64") {
+		implementation 'io.netty:netty-resolver-dns-native-macos:4.1.87.Final:osx-aarch_64'  // macos 전용 의존성
+	}
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
 }
 
