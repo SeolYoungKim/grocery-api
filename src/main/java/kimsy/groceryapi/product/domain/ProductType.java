@@ -14,7 +14,7 @@ public enum ProductType {
                     productType -> productType));
 
     public static ProductType of(String productTypeName) {
-        if (!NAME_TYPE_MAP.containsKey(productTypeName)) {
+        if (productTypeName == null || !NAME_TYPE_MAP.containsKey(productTypeName)) {
             throw new IllegalArgumentException("서비스를 지원하지 않는 품목입니다.");
         }
 
