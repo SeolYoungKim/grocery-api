@@ -15,6 +15,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -38,7 +40,6 @@ class GroceryWebClientMapperTest extends MockWebServerTest {
     @DisplayName("청과물 분류 별 전체 품목을 조회하는 기능")
     @Nested
     class GetProducts {
-
         @DisplayName("ProductType으로 fruit이 전달된 경우 과일 목록을 반환한다.")
         @Test
         void fruitToProductNames() throws JsonProcessingException {
@@ -122,11 +123,20 @@ class GroceryWebClientMapperTest extends MockWebServerTest {
         @DisplayName("지원되지 않는 품목이 전달된 경우 예외를 발생시킨다.")
         @Test
         void failCase() {
-            final String notSupportedType = "고기";
+            final String notSupportedType = "meat";
             final String notSupportedName = "한우";
             assertThatThrownBy(() -> groceryWebClientMapper.getProduct(notSupportedType, notSupportedName))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("서비스를 지원하지 않는 품목입니다.");
+        }
+
+        @ParameterizedTest(name = "품목명에 빈 값이나 null이 전달될 경우 예외를 발생시킨다. 입력={0}")
+        @NullAndEmptySource
+        void failCase2(String nullOrEmpty) {
+            final String supportedType = ProductType.FRUIT.productTypeName();
+            assertThatThrownBy(() -> groceryWebClientMapper.getProduct(supportedType, nullOrEmpty))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("품목명을 입력해 주세요.");
         }
     }
 }
