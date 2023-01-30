@@ -122,7 +122,7 @@ class GroceryWebClientMapperTest extends MockWebServerTest {
 
         @DisplayName("지원되지 않는 품목이 전달된 경우 예외를 발생시킨다.")
         @Test
-        void failCase() {
+        void failCaseCausedByNotSupportedType() {
             final String notSupportedType = "meat";
             final String notSupportedName = "한우";
             assertThatThrownBy(() -> groceryWebClientMapper.getProduct(notSupportedType, notSupportedName))
@@ -130,9 +130,10 @@ class GroceryWebClientMapperTest extends MockWebServerTest {
                     .hasMessageContaining("서비스를 지원하지 않는 품목입니다.");
         }
 
-        @ParameterizedTest(name = "품목명에 빈 값이나 null이 전달될 경우 예외를 발생시킨다. 입력={0}")
+        @DisplayName("품목명에 빈 값이나 null이 전달될 경우 예외를 발생시킨다.")
+        @ParameterizedTest(name = "입력={0}")
         @NullAndEmptySource
-        void failCase2(String nullOrEmpty) {
+        void failCaseCausedByNullOrEmpty(String nullOrEmpty) {
             final String supportedType = ProductType.FRUIT.productTypeName();
             assertThatThrownBy(() -> groceryWebClientMapper.getProduct(supportedType, nullOrEmpty))
                     .isInstanceOf(IllegalArgumentException.class)
