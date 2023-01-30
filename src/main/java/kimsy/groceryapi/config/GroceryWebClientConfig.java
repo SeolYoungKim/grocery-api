@@ -18,10 +18,10 @@ public class GroceryWebClientConfig {
 
     @Bean
     public GroceryWebClientMapper groceryWebClientMap() {
-        final Map<String, GroceryWebClient> map = Map.of(
-                ProductType.FRUIT.productTypeName(), fruitWebClient,
-                ProductType.VEGETABLE.productTypeName(), vegetableWebClient);
+        final Map<ProductType, GroceryWebClient> webClients = Map.of(
+                ProductType.FRUIT, fruitWebClient,
+                ProductType.VEGETABLE, vegetableWebClient);
 
-        return new GroceryWebClientMapper(map);
+        return new GroceryWebClientMapper(webClients);
     }
 }
