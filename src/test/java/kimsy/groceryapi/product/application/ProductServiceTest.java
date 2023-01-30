@@ -38,8 +38,8 @@ class ProductServiceTest extends MockWebServerTest {
         final VegetableWebClient vegetableWebClient = new VegetableWebClient(baseUrl, token);
 
         GroceryWebClientMapper groceryWebClientMapper = new GroceryWebClientMapper(Map.of(
-                        ProductType.FRUIT.productTypeName(), fruitWebClient,
-                        ProductType.VEGETABLE.productTypeName(), vegetableWebClient));
+                        ProductType.FRUIT, fruitWebClient,
+                        ProductType.VEGETABLE, vegetableWebClient));
 
         productService = new ProductService(groceryWebClientMapper);
     }

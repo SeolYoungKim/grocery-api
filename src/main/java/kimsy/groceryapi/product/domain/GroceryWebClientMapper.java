@@ -5,9 +5,9 @@ import kimsy.groceryapi.product.domain.web_client.GroceryWebClient;
 import org.springframework.util.StringUtils;
 
 public class GroceryWebClientMapper {
-    private final Map<String, GroceryWebClient> webClients;
+    private final Map<ProductType, GroceryWebClient> webClients;
 
-    public GroceryWebClientMapper(final Map<String, GroceryWebClient> webClients) {
+    public GroceryWebClientMapper(final Map<ProductType, GroceryWebClient> webClients) {
         this.webClients = webClients;
     }
 
@@ -16,18 +16,14 @@ public class GroceryWebClientMapper {
                 .getProducts();
     }
 
-    private GroceryWebClient findHandlerBy(final String productType) {
-        return webClients.keySet().stream()
-                .filter(key -> key.equals(productType))
-                .map(webClients::get)
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("서비스를 지원하지 않는 품목입니다."));
-    }
-
     public Product getProduct(final String productType, final String productName) {
         validate(productName);
         return findHandlerBy(productType)
                 .getProduct(productName);
+    }
+
+    private GroceryWebClient findHandlerBy(final String productType) {
+        return webClients.get(ProductType.of(productType));
     }
 
     private void validate(final String productName) {

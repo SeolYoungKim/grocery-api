@@ -1,15 +1,24 @@
 package kimsy.groceryapi.product.domain;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public enum ProductType {
     FRUIT("fruit", "/token", "/product", "name"),
     VEGETABLE("vegetable", "/token", "/item", "name");
 
-    public static boolean isFruit(final String productType) {
-        return FRUIT.productTypeName.equals(productType);
-    }
+    private static final Map<String, ProductType> NAME_TYPE_MAP = Arrays.stream(values())
+            .collect(Collectors.toUnmodifiableMap(
+                    productType -> productType.productTypeName,
+                    productType -> productType));
 
-    public static boolean isVegetable(final String productType) {
-        return VEGETABLE.productTypeName.equals(productType);
+    public static ProductType of(String productTypeName) {
+        if (!NAME_TYPE_MAP.containsKey(productTypeName)) {
+            throw new IllegalArgumentException("서비스를 지원하지 않는 품목입니다.");
+        }
+
+        return NAME_TYPE_MAP.get(productTypeName);
     }
 
     private final String productTypeName;
