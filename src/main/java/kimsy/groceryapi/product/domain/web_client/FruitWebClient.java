@@ -40,6 +40,8 @@ public class FruitWebClient extends GroceryWebClient {
 
     @Override
     Product requestForProduct(final String productName) {
+        validateNullOrEmpty(productName);
+
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path(ProductType.FRUIT.productUri())

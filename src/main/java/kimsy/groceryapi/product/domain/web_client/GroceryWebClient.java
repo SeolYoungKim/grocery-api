@@ -5,6 +5,7 @@ import kimsy.groceryapi.product.domain.AccessToken;
 import kimsy.groceryapi.product.domain.Product;
 import kimsy.groceryapi.product.domain.Products;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
@@ -61,6 +62,12 @@ public abstract class GroceryWebClient {
 
         validateNull(result);
         return result;
+    }
+
+    protected void validateNullOrEmpty(final String productName) {
+        if (!StringUtils.hasText(productName)) {
+            throw new IllegalArgumentException("품목명을 입력해 주세요.");
+        }
     }
 
     abstract Product requestForProduct(String productName);
