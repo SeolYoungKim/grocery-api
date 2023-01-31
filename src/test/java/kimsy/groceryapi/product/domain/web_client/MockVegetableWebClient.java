@@ -7,32 +7,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class VegetableWebClient extends GroceryWebClient {
+public class MockVegetableWebClient extends MockGroceryWebClient {
     @Autowired
-    public VegetableWebClient(@Value("${api.url.vegetable}") String vegetableUrl) {
+    public MockVegetableWebClient(@Value("${api.url.vegetable}") String vegetableUrl) {
         super(vegetableUrl);
     }
 
-    public VegetableWebClient(final String vegetableUrl, final AccessToken accessToken) {
+    public MockVegetableWebClient(final String vegetableUrl, final AccessToken accessToken) {
         super(vegetableUrl, accessToken);
     }
 
     @Override
-    String[] requestForProducts() {
+    ResponseEntity<String[]> requestForProducts() {
         return webClient.get()
                 .uri(ProductType.VEGETABLE.productUri())
                 .header(HttpHeaders.AUTHORIZATION, accessToken.accessToken())
                 .retrieve()
-                .bodyToMono(String[].class)
+                .toEntity(String[].class)
                 .block();
     }
 
     @Override
-    AccessToken getToken() {
+    ResponseEntity<AccessToken> getToken() {
         return webClient.get()
                 .uri(ProductType.VEGETABLE.tokenUri())
                 .exchangeToMono(response -> {
@@ -42,13 +43,13 @@ public class VegetableWebClient extends GroceryWebClient {
                     if (responseCookie == null) {
                         throw new IllegalStateException("정보를 가져오는 데 실패했습니다.");
                     }
-
-                    return Mono.just(new AccessToken(responseCookie.getValue()));
+                    return Mono.just(new ResponseEntity<>(
+                            new AccessToken(responseCookie.getValue()), response.statusCode()));
                 }).block();
     }
 
     @Override
-    Product requestForProduct(final String productName) {
+    ResponseEntity<Product> requestForProduct(final String productName) {
         validateNullOrEmpty(productName);
 
         return webClient.get()
@@ -58,7 +59,7 @@ public class VegetableWebClient extends GroceryWebClient {
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, accessToken.accessToken())
                 .retrieve()
-                .bodyToMono(Product.class)
+                .toEntity(Product.class)
                 .block();
     }
 }

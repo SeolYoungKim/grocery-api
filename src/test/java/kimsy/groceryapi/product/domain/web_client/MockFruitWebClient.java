@@ -6,40 +6,41 @@ import kimsy.groceryapi.product.domain.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FruitWebClient extends GroceryWebClient {
+public class MockFruitWebClient extends MockGroceryWebClient {
     @Autowired
-    public FruitWebClient(@Value("${api.url.fruit}") String fruitUrl) {
+    public MockFruitWebClient(@Value("${api.url.fruit}") String fruitUrl) {
         super(fruitUrl);
     }
 
-    public FruitWebClient(final String fruitUrl, final AccessToken accessToken) {
+    public MockFruitWebClient(final String fruitUrl, final AccessToken accessToken) {
         super(fruitUrl, accessToken);
     }
 
     @Override
-    String[] requestForProducts() {
+    ResponseEntity<String[]> requestForProducts() {
         return webClient.get()
                 .uri(ProductType.FRUIT.productUri())
                 .header(HttpHeaders.AUTHORIZATION, accessToken.accessToken())
                 .retrieve()
-                .bodyToMono(String[].class)
+                .toEntity(String[].class)
                 .block();
     }
 
     @Override
-    AccessToken getToken() {
+    ResponseEntity<AccessToken> getToken() {
         return webClient.get()
                 .uri(ProductType.FRUIT.tokenUri())
                 .retrieve()
-                .bodyToMono(AccessToken.class)
+                .toEntity(AccessToken.class)
                 .block();
     }
 
     @Override
-    Product requestForProduct(final String productName) {
+    ResponseEntity<Product> requestForProduct(final String productName) {
         validateNullOrEmpty(productName);
 
         return webClient.get()
@@ -49,7 +50,7 @@ public class FruitWebClient extends GroceryWebClient {
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, accessToken.accessToken())
                 .retrieve()
-                .bodyToMono(Product.class)
+                .toEntity(Product.class)
                 .block();
     }
 }
