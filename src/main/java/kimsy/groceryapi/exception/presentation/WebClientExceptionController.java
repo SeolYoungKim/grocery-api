@@ -16,7 +16,10 @@ public class WebClientExceptionController {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(WebClientResponseException.NotFound.class)
-    public String notFountHandler(Model model) {
+    public String notFountHandler(WebClientResponseException e, Model model) {
+        log.info("[API 404 ERROR] message={}", e.getMessage());
+        log.info("[API 404 ERROR] response body={}", e.getResponseBodyAs(String.class));
+
         final ExceptionResult exceptionResult = new ExceptionResult(HttpStatus.NOT_FOUND.name(),
                 HttpStatus.NOT_FOUND.value(), "없는 품목입니다. 전체 목록의 품목명을 확인해 주세요.");
 
