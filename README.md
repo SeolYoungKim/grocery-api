@@ -86,6 +86,8 @@
 
 ### profile
 - `application.yml` 파일에는 gitHub에 올라가지 않은 `dev` profile이 설정 되어있습니다.
+  - 이는 `test/resources`에도 적용 되어있습니다.
+  - 아래의 내용을 설정 해주신 후, profile을 `real`로 설정해 주세요.
 - `application-real.yml`에 `dev` profile과 같은 스타일의 `property`가 적혀있으며, 아래와 같이 표기 해두었습니다.
   - "과일 가게 URI"
   - "채소 가게 URI"
